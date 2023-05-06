@@ -3,8 +3,8 @@ pipeline {
     
     environment {
         AWS_REGION = 'us-east-1'
-        AWS_ACCESS_KEY_ID = credentials('AKIAXLLN4ONRKNO76ZFF')
-        AWS_SECRET_ACCESS_KEY = credentials('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')
+        AWS_ACCESS_KEY_ID = credentials('AKIAXLLN4ONRFE4DSRTO')
+        AWS_SECRET_ACCESS_KEY = credentials('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')
         EC2_INSTANCE_IP = '18.209.15.26'
     }
 
