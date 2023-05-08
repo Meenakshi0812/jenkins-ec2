@@ -13,7 +13,7 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                withCredentials([sshUserPrivateKey(credentialsId: 'jenkins-ec2-ssh-key', keyFileVariable: 'SSH_KEY')]) {
+                withCredentials([sshUserPrivateKey(credentialsId: 'ssh_cred', keyFileVariable: 'SSH_KEY')]) {
                     withEnv(['SSH_AUTH_SOCK' + '= $SSH_AUTH_SOCK', 'SSH_AGENT_PID' + '= $SSH_AGENT_PID']) {
                         sh 'ssh-keyscan $SSH_HOST >> ~/.ssh/known_hosts'
                         sshagent(['ssh_cred']) {
