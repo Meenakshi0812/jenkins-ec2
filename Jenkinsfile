@@ -1,27 +1,29 @@
 pipeline {
     agent any
-
+    
+    environment {
+        EC2_INSTANCE_IP = '54.167.35.145'
+        EC2_INSTANCE_USER = 'ec2-user'
+    }
+    
     stages {
         stage('Checkout') {
             steps {
                 git branch: 'main', url: 'https://github.com/Meenakshi0812/jenkins-ec2.git'
             }
         }
-        stage('Upload to S3') {
+        stage('Build') {
             steps {
-                sh 'aws s3 cp . s3://jenkins-ec2/my-app --recursive'
+                sh 'npm install'
+                sh 'npm run build'
             }
         }
-        stage('Copy to EC2') {
+        stage('Deploy') {
             steps {
-                withAWS(region:'us-east-1', credentials:'aws-creds') {
-                    sh 'aws s3 cp s3://jenkins-ec2/my-app . --recursive'
-                    sshagent(['aws-keypair']) {
-                        sh 'ssh -i "aws-keypair.pem" ec2-user@ec2-54-167-35-145.compute-1.amazonaws.com "sudo cp -r . /var/www/html"'
-                    }
+                sshagent(['aws-keypair.pem']) {
+                    sh "scp -r ./dist/* ${EC2_INSTANCE_USER}@${EC2_INSTANCE_IP}:/var/www/html"
                 }
             }
         }
     }
 }
-
