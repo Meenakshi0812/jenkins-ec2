@@ -16,7 +16,7 @@ pipeline {
                 withCredentials([sshUserPrivateKey(credentialsId: 'jenkins-ec2-ssh-key', keyFileVariable: 'SSH_KEY')]) {
                     withEnv(['SSH_AUTH_SOCK' + '= $SSH_AUTH_SOCK', 'SSH_AGENT_PID' + '= $SSH_AGENT_PID']) {
                         sh 'ssh-keyscan $SSH_HOST >> ~/.ssh/known_hosts'
-                        sshagent(['jenkins-ec2-ssh-key']) {
+                        sshagent(['ssh_cred']) {
                             sh "scp -r './home/ec2-user/jenkins-ec2/*' ec2-user@$SSH_HOST:/var/www/html/"
                         }
                     }
