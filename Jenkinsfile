@@ -1,12 +1,5 @@
 pipeline {
     agent any
-    
-    environment {
-        AWS_REGION = 'us-east-1'
-        AWS_ACCESS_KEY_ID = credentials('AKIAXLLN4ONRFE4DSRTO')
-        AWS_SECRET_ACCESS_KEY = credentials('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')
-        EC2_INSTANCE_IP = '18.209.15.26'
-    }
 
     stages {
         stage('Checkout') {
@@ -14,18 +7,21 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/Meenakshi0812/jenkins-ec2.git'
             }
         }
-
-        stage('Build') {
+        stage('Upload to S3') {
             steps {
-                sh 'npm install'
-                sh 'npm run build'
+                sh 'aws s3 cp . s3://jenkins-ec2/my-app --recursive'
             }
         }
-
-        stage('Deploy') {
+        stage('Copy to EC2') {
             steps {
-                sh "aws ec2 scp --recursive --exclude '.git' --exclude 'node_modules' . ec2-user@${env.EC2_INSTANCE_IP}:/var/www/html"
+                withAWS(region:'us-east-1', credentials:'aws-creds') {
+                    sh 'aws s3 cp s3://jenkins-ec2/my-app . --recursive'
+                    sshagent(['aws-keypair']) {
+                        sh 'ssh -i "aws-keypair.pem" ec2-user@ec2-54-167-35-145.compute-1.amazonaws.com "sudo cp -r . /var/www/html"'
+                    }
+                }
             }
         }
     }
 }
+
