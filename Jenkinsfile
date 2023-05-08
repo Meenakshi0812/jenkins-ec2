@@ -10,11 +10,11 @@ pipeline {
         }
         stage('Deploy') {
             environment {
-                SSH_KEY = credentials('id_rsa')
+                SSH_KEY = credentials('ssh_cred')
                 HOST = 'ec2-54-167-35-145.compute-1.amazonaws.com'
             }
             steps {
-                sshagent(credentials: ['id_rsa']) {
+                sshagent(credentials: ['ssh_cred']) {
                     sh "scp -r ./home/ec2-user/jenkins-ec2/* ec2-user@${HOST}:/var/www/html/"
                 }
             }
