@@ -14,7 +14,7 @@ pipeline {
                 HOST = 'ec2-54-167-35-145.compute-1.amazonaws.com'
             }
             steps {
-                sshagent(credentials: ['ssh-key']) {
+                sshagent(credentials: ['ssh-cred']) {
                     sh "scp -r ./home/ec2-user/jenkins-ec2/* ec2-user@${HOST}:/var/www/html/"
                 }
             }
