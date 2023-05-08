@@ -18,7 +18,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    sshagent(['aws-keypair']) {
+                    sshagent(['id_rsa.pub']) {
                         sh "scp -r ./${REPO_NAME}/. ${EC2_INSTANCE_USER}@${EC2_INSTANCE_IP}:/var/www/html"
                     }
                 }
