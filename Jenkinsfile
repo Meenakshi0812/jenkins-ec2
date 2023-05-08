@@ -5,12 +5,12 @@ pipeline {
         EC2_INSTANCE_USER = 'ec2-user'
         EC2_INSTANCE_IP = '54.167.35.145'
         REPO_NAME = 'jenkins-ec2'
-        PHP_CODE_PATH = 'path/to/your-php-code'
+        PHP_CODE_PATH = '/home/ec2-user/jenkins-ec2'
     }
     stages {
         stage('Checkout') {
             steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: "https://github.com/<your-github-username>/${REPO_NAME}.git"]]])
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: "https://github.com/Meenakshi0812/jenkins-ec2.git/${REPO_NAME}.git"]]])
             }
         }
         stage('Deploy') {
