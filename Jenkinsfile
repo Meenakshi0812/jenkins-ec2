@@ -1,26 +1,21 @@
 pipeline {
     agent any
-
-    environment {
-        EC2_INSTANCE_IP = '54.167.35.145'
-        EC2_INSTANCE_USER = 'ec2-user'
-        REPO_NAME = 'jenkins-ec2'
-        BRANCH_NAME = 'main'
-    }
-
+    
     stages {
         stage('Checkout') {
             steps {
-                git branch: BRANCH_NAME, url: "https://github.com/Meenakshi0812/${REPO_NAME}.git"
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], 
+                          userRemoteConfigs: [[url: 'https://github.com/Meenakshi0812/jenkins-ec2.git']]])
             }
         }
-
         stage('Deploy') {
+            environment {
+                SSH_KEY = credentials('ssh-cred')
+                HOST = 'ec2-xx-xx-xxx-xxx.compute-1.amazonaws.com'
+            }
             steps {
-                script {
-                    sshagent(['ssh_cred']) {
-                        sh "scp -r ./${REPO_NAME}/. ${EC2_INSTANCE_USER}@${EC2_INSTANCE_IP}:/var/www/html"
-                    }
+                sshagent(credentials: ['ssh-key']) {
+                    sh "scp -r ./<path-to-your-php-code>/* ec2-user@${HOST}:/var/www/html/"
                 }
             }
         }
