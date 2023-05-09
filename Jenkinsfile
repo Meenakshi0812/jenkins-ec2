@@ -1,25 +1,18 @@
 pipeline {
     agent any
-    environment {
-        SERVER_IP = "54.167.35.145" // Replace with your EC2 instance IP address
-        SSH_CRED_ID = "ssh_cred" // Replace with your SSH credential ID
-    }
     stages {
-        stage('Checkout') {
+        stage('Clone') {
             steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/Meenakshi0812/jenkins-ec2.git']]])
-            }
-        }
-        stage('Build') {
-            steps {
-                sh 'echo "Build steps go here"'
-                // Replace this with your actual build commands
+                // clone your Git repository
+                git 'https://github.com/Meenakshi0812/jenkins-ec2.git'
             }
         }
         stage('Deploy') {
             steps {
-                sshagent(credentials: [SSH_CRED_ID]) {
-                    sh "scp -r ./* ec2-user@${SERVER_IP}:/var/www/html/"
+                // start the SSH agent and add your private key
+                sshagent(['ssh_cred']) {
+                    // copy the PHP code to the EC2 instance
+                    sh "scp -r date.php ec2-user@54.167.35.145:/var/www/html/"
                 }
             }
         }
