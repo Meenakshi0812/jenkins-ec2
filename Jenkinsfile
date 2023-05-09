@@ -10,7 +10,7 @@ pipeline {
         
         stage('Deploy Code to EC2 Instance') {
             steps {
-                sh "sudo cp -r  /home/ec2-user/jenkins-ec2/date.php  /var/www/html"'
+                sh "sudo cp -r  /home/ec2-user/jenkins-ec2/date.php  /var/www/html"
             }
         }
     }
