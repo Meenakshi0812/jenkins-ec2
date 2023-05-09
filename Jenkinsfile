@@ -17,7 +17,7 @@ pipeline {
                 // Authenticate SSH agent with your EC2 instance
                 sshagent(['ssh_cred']) {
                     // Copy your PHP code to the remote server
-                    sh "scp -r ./date.php ec2-user@172.31.23.221:/var/www/html/"
+                    sh "scp -r ./date.php ec2-user@ip-172-31-23-221:/var/www/html/"
                 }
             }
         }
