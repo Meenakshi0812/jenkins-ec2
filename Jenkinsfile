@@ -10,7 +10,7 @@ pipeline {
         
         stage('Deploy Code to EC2 Instance') {
             steps {
-                sh 'sudo scp -o StrictHostKeyChecking=no -r ./date.php ec2-user@ip-172-31-90-152:/var/www/html'
+                sh 'sudo scp -o StrictHostKeyChecking=no -r ./date.php ec2-user@3.95.188.119:/var/www/html'
             }
         }
     }
