@@ -7,7 +7,7 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/Meenakshi0812/jenkins-ec2.git'
             }
         }
-        
+        stage('Deploy') {
         steps {
         sh '''
           ssh -i /Users/meenakshigowra/downloads/keypairs/jenkins.cer ec2-user@107.22.129.135 "sudo rm -rf /var/www/html/*"
@@ -15,4 +15,5 @@ pipeline {
         '''
       }
     }
+  }
 }
