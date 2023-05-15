@@ -8,10 +8,11 @@ pipeline {
             }
         }
         
-        stage('Deploy Code to EC2 Instance') {
-            steps {
-                sh "sudo cp -r  /home/ec2-user/jenkins-ec2/date.php  /var/www/html"
-            }
-        }
+        steps {
+        sh '''
+          ssh -i /Users/meenakshigowra/downloads/keypairs/jenkins.cer ec2-user@107.22.129.135 "sudo rm -rf /var/www/html/*"
+          scp -i /Users/meenakshigowra/downloads/keypairs/jenkins.cer -r /home/ec2-user/jenkins-ec2/date.php/* ec2-user@107.22.129.135:/var/www/html/
+        '''
+      }
     }
 }
