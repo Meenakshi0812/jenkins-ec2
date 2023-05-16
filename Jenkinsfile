@@ -14,8 +14,10 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                sshagent(['ssh-public-key-local']) {
-                    sh "cd /Users/meenakshigowra/downloads/keypairs ssh -i "jenkins.cer" ec2-user@ec2-107-22-129-135.compute-1.amazonaws.com 'sudo systemctl stop myapp.service && sudo rm -rf /var/www/html/* && sudo cp -r /var/lib/jenkins/workspace/myapp/dist/* /var/www/html/ && sudo systemctl start myapp.service'"
+                sshagent(['ssh-public-key']) {
+                    sh """
+                        ssh -o StrictHostKeyChecking=no ec2-user@${env.107.22.129.135} 'cd /var/www/html && git pull'
+                    """
                 }
             }
         }
