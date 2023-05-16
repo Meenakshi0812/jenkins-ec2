@@ -11,7 +11,8 @@ pipeline {
             steps {
                 sshagent(['ssh-public-key']) {
                     sh """
-                        ssh -i /Users/meenakshigowra/downloads/keypairs/jenkins.cer ec2-user@107.22.129.135 'cd /var/www/html && git pull'
+                        ssh -i /Users/meenakshigowra/downloads/keypairs/jenkins.cer ec2-user@107.22.129.135
+                        sudo cp -r  /home/ec2-user/jenkins-ec2/date.php  /var/www/htm
                     """
                 }
             }
