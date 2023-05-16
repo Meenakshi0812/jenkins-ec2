@@ -11,7 +11,7 @@ pipeline {
             steps {
                 sshagent(['ssh-public-key']) {
                     sh """
-                        ssh -o StrictHostKeyChecking=no ec2-user@${env.107.22.129.135} 'cd /var/www/html && git pull'
+                        cd /Users/meenakshigowra/downloads/keypairs/jenkins.cer ssh -o StrictHostKeyChecking=no ec2-user@${env.107.22.129.135} 'cd /var/www/html && git pull'
                     """
                 }
             }
